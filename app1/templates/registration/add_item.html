@@ -1,0 +1,103 @@
+{% extends 'registration/main.html' %}
+{% block content %}
+
+
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Purchase Product</h1>
+        </div>
+        {% include 'flash/_flash_messages.html' %}
+        <form method="POST">
+            {% csrf_token %}
+            <select name="purchase" hidden >
+                <option value="{{ pid.id }}" selected>{{ pid }}</option>
+            </select>
+            <div class="form-row">
+                <div class="col-sm-4 mb-3">
+                    <label class="font-weight-bold">Product</label>
+                    <input type="text" class="form-control" name="product" required>
+                </div>
+                <div class="col-sm-4 mb-3">
+                    <label class="font-weight-bold">IMEI_NO</label>
+                    <input type="number" class="form-control" name="imei_no" min='1' required>
+                </div>
+                <div class="col-sm-4 mb-3">
+                    <label class="font-weight-bold">Price</label>
+                    <input type="number" class="form-control" name="price" min='1' required>
+                </div>
+            </div>
+            <button  type="submit" class="btn btn-outline-info mb-3 px-4">Add</button>
+        </form>
+       
+                         
+        <a href="{% url 'purchase' %}" class="btn btn-outline-success mb-3 px-4" type="submit">Finish</a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Total Items</h1>
+        </div>
+        <table class="table table-striped text-center table-borderless">
+            <thead>
+                <tr>
+                    <th>PRODUCT</th>
+                    <th>IMEI_NO</th>
+                    <th>PRICE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if items %}
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.product}}</td>
+                    <td>{{ item.imei_no }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>
+                          <form method="POST" enctype="multipart/form-data">
+                           {% csrf_token %}
+                           
+                          <input type="file" name="img">
+                            <select name="prod" hidden>
+                              <option value="{{ item.id }}" selected >{{ item.id}}</option>
+                          </select>
+                            
+                            <button type="submit" name="prodImg" class='btn btn-primary'>upload</button>
+                              </form>
+                    </td>
+                    <td>
+
+                         <div class="row" >
+                        {% for i in imgs %}
+                        {% if i.prod.id == item.id %}
+                        <!--{{ i.img.url }}-->
+                        
+                             <div class="col-md" >
+                        <a href="{{ i.img.url }}" target="_blank">view</a>
+                        <img  style="height:90px;width:90px;" src="{{ i.img.url }}" alt="image not found"> 
+                                </div>
+                        
+                        {% endif %}
+                        {% endfor %}
+                         </div>
+                       
+                    </td>
+                </tr>
+
+                <!-- Modal Delete Purchase-->
+                {% endfor %}
+                {% else %}
+                <tr>No Products Added yet</tr>
+                {% endif %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</form>
+{% endblock %}

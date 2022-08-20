@@ -1,0 +1,12 @@
+{% extends 'registration/main.html' %}
+{% block content %}
+
+
+    {% for i in imgs %}
+     <img src="{{ i.img.url }}" alt="photo">
+{% endfor %}
+
+{% endblock %}
+
+
+

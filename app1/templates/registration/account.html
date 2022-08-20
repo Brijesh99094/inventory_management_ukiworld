@@ -1,0 +1,123 @@
+{% extends "registration/main.html" %}
+{% load humanize %}
+{% block content %}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Account Detail</h1>
+        </div>
+        {% include 'flash/_flash_messages.html' %}
+        <form method="POST">{% csrf_token %}
+            <div class="form-row">
+                    <div class="col-sm-4 mb-3">
+                                        <label class="font-weight-bold">Type</label>
+                                        <select class="custom-select" name="cr_dr"  required>
+                                                 <option value="">-------</option>
+                                                <option value="credit">Credit</option>
+                                                 <option value="debit">Debit</option>
+                                        </select>
+                                </div>
+                <div class="col-sm-4 mb-3">
+                    <label class="font-weight-bold">Ammount</label>
+                    <input type="number" min="0" max="10000000" class="form-control" name="amount" required>
+                </div>
+                <div class="col-sm-4 mb-3">
+                                        <label class="font-weight-bold">Account</label>
+                                        <select class="custom-select" name="acc" id="acc">
+                                                 <option value="">-------</option>
+                                                <option value="Due">Due</option>
+                                                 <option value="Cash">Cash</option>
+                                                <option value="Jamin acc"> Jamin acc</option>
+                                                <option value="Jamin machine"> Jamin machine</option>
+                                                <option value="Urvesh machine">Urvesh machine</option>
+                                                <option value="Chintan machine ">Chintan machine </option>
+                                                <option value="Urvesh hdfc saving :- 8918"> Urvesh hdfc saving :- 8918 </option>
+                                                <option value="Urvesh hdfc current :- 6983">Urvesh hdfc current :- 6983 </option>
+                                                <option value="Urvesh yes current">Urvesh yes current </option>
+                                        </select>
+                                </div>
+                <div class="col-sm-4 mb-3">
+                    <label class="font-weight-bold" >Remark</label>
+                    <input type="text" class="form-control" name="remark" id="remark">
+                </div>
+                
+            </div>
+            
+            <button class="btn btn-outline-info mb-3 px-4"  type="submit" >Add</button>
+        </form>
+        <a href="{% url 'index' %}" class="btn btn-outline-success mb-3 px-4" type="submit">Finish</a>
+    </div>
+</div>
+
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Account</h1>
+            <h4 >Amount : {{ amt | intcomma  }}</h3>
+        </div>
+        <table class="table table-striped text-center table-borderless" data-toggle="table" data-search="true"
+            data-show-toggle="true" data-show-fullscreen="true" data-show-columns="true" data-click-to-select="true">
+            <thead>
+                <tr>
+                    <th>DATE</th>
+                    <th>REMARK</th>
+                    <th>DEBIT</th>
+
+                    <th>CREDIT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if items %}
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.date}}</td>
+                    <td>{{ item.remark }}</td>
+                    {% if item.check == True %}
+                        <td>{{ item.amount | intcomma }}</td>
+                        <td>-</td>
+                    {% else %}
+                    <td>-</td>
+                    <td>{{ item.amount | intcomma }}</td>
+                   
+                    {% endif %}
+                </tr>
+
+                {% endfor %}
+                <tr style="background-color: rgb(148, 240, 148);color: black;">
+                    <td> Now </td>
+                    <td> Total ammount is </td>
+                    <td>-</td>
+                    <td>{{ amt | intcomma }}</td>
+                </tr>
+                {% else %}
+                <tr>No Products Added yet</tr>
+                {% endif %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</form>
+
+ <script>
+                          window.onload = function() {
+                        //considering there aren't any hashes in the urls already
+                             if(!window.location.hash) {
+                    //setting window location
+                        window.location = window.location + '#loaded';
+                         //using reload() method to reload web page
+                         setTimeout(function(){ window.location.reload(); },200)
+                         
+                
+    }
+}
+
+
+    </script>
+    
+
+{% endblock %}

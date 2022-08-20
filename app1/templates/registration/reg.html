@@ -1,0 +1,80 @@
+{% extends 'registration/main.html' %}
+{% load static %}
+
+
+{% block content %}   
+
+<div>
+<div class="card mb-4">
+    <div class="card-body">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Users</h1>
+    </div>
+    <form method="POST">{% csrf_token %}
+        <div class="container">
+            {% include 'flash/_flash_messages.html' %}
+        </div>
+        <div class="form-row">
+            <div class="col-sm-6 mb-3">
+                <label for="validationCustom01" class="font-weight-bold">Username</label>
+                <input type="text" class="form-control" id="Username" name="username" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-6 mb-3">
+                <label for="validationCustom04" class="font-weight-bold">Password</label>
+                <input type="password" class="form-control" id="Password" name="password1" required>
+            </div>
+        </div>
+        <div class="form-row" >
+            <div class="col-sm-6 mb-3">
+                <label for="validationCustom04" class="font-weight-bold">Password Confirmation</label>
+                <input type="password" class="form-control" id="Password" name="password2" required>
+            </div>
+        </div>
+        {% for field in form %}
+        <p>
+            {% for error in field.errors %}
+                <small style="color: red;">{{ error }}</small>
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <button class="btn btn-outline-success mb-3 px-4" type="submit" name="action" value="signUp">Add</button>
+        <button class="btn btn-outline-danger mb-3 px-4" type="reset" name="action" value="signUp">Clear</button>
+        
+    </form>
+    </div>
+</div>
+   
+   
+    <div class="card mb-4">
+        <div class="card-body">
+    <h1 class="h2 mt-5">All Users</h1>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-striped text-center table-borderless" data-toggle="table" data-pagination="true"
+            data-show-toggle="true" data-page-size="25" data-search="true" data-show-fullscreen="true"
+            data-show-columns="true">
+            <thead>
+                <tr>
+                    <th>USERNAME</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if users %}
+                {% for user in users  %}
+                <tr>
+                    <td>{{ user }}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+        </div>
+        </div>
+
+
+</div>
+{% endblock %} 
